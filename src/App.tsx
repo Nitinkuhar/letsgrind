@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Person } from './types';
 import PersonCard from './components/PersonCard';
 import ProgressGraph from './components/ProgressGraph';
+import { api } from './services/api';
 import './App.css';
 
 // Auto-calculate target end date based on healthy weight loss rate (0.8-1kg per week)
@@ -61,6 +62,56 @@ const INITIAL_DATA: Person[] = [
 
 function App() {
   const [people, setPeople] = useState<Person[]>(INITIAL_DATA);
+  const [loading, setLoading] = useState(true);
+  const [serverOnline, setServerOnline] = useState(false);
+
+  // Load data from server on mount
+  useEffect(() => {
+    const loadDataFromServer = async () => {
+      try {
+        // Check if server is online
+        const isOnline = await api.healthCheck();
+        setServerOnline(isOnline);
+
+        if (isOnline) {
+          const data = await api.fetchData();
+          if (data && data.length > 0) {
+            setPeople(data);
+            console.log('✅ Loaded data from server');
+          } else {
+            // If server is empty, initialize with INITIAL_DATA
+            await api.saveData(INITIAL_DATA);
+            setPeople(INITIAL_DATA);
+            console.log('📝 Initialized server with default data');
+          }
+        } else {
+          console.log('⚠️ Server offline, using initial data');
+        }
+      } catch (error) {
+        console.error('❌ Error loading data:', error);
+        console.log('⚠️ Using initial data');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadDataFromServer();
+  }, []);
+
+  // Save to server whenever people data changes
+  useEffect(() => {
+    if (!loading && serverOnline) {
+      const saveToServer = async () => {
+        try {
+          await api.saveData(people);
+        } catch (error) {
+          console.error('❌ Error saving to server:', error);
+        }
+      };
+      saveToServer();
+    }
+  }, [people, loading, serverOnline]);
+
 
   const handleUpdateActivities = (personId: string, date: string, completedActivities: string[], weight?: number) => {
     setPeople(people.map(p => {
@@ -111,6 +162,17 @@ function App() {
       };
     }));
   };
+
+  if (loading) {
+    return (
+      <div className="app">
+        <div className="loading-screen">
+          <div className="loader"></div>
+          <p>Loading your data...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="app">

@@ -1,0 +1,69 @@
+[
+  {
+    "id": "1",
+    "name": "Anuradha",
+    "startWeight": 70,
+    "currentWeight": 71,
+    "goalWeight": 65,
+    "height": 165,
+    "age": 28,
+    "gender": "female",
+    "startDate": "2025-10-17",
+    "targetEndDate": "2025-11-28",
+    "color": "#FF6B6B",
+    "dailyActivities": [
+      {
+        "date": "2025-11-16",
+        "completedActivities": [
+          "healthy-food",
+          "exercise",
+          "steps"
+        ],
+        "weight": 71
+      }
+    ],
+    "weightHistory": [
+      {
+        "date": "2025-11-16",
+        "weight": 71
+      },
+      {
+        "date": "2025-10-17",
+        "weight": 70
+      }
+    ]
+  },
+  {
+    "id": "2",
+    "name": "Nitin Kuhar",
+    "startWeight": 100,
+    "currentWeight": 100,
+    "goalWeight": 89,
+    "height": 178,
+    "age": 27,
+    "gender": "male",
+    "startDate": "2025-10-17",
+    "targetEndDate": "2026-01-16",
+    "color": "#4ECDC4",
+    "dailyActivities": [
+      {
+        "date": "2025-11-16",
+        "completedActivities": [
+          "healthy-food",
+          "exercise"
+        ],
+        "weight": 100
+      }
+    ],
+    "weightHistory": [
+      {
+        "date": "2025-11-16",
+        "weight": 100
+      },
+      {
+        "date": "2025-10-17",
+        "weight": 100
+      }
+    ]
+  }
+]
