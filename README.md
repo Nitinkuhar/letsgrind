@@ -16,11 +16,11 @@ A beautiful, competitive fitness and health tracker built with React and TypeScr
 - **Historical Data** - Track activities for any past date
 
 ### 🏆 Competitive & Motivational
-- **Daily Champions Calendar** - See who won each day in a visual calendar grid
-- **Overall Leaderboard** - Rankings based on weight loss progress
-- **Most Wins Tracker** - See who's been consistently crushing it
-- **Points System** - Earn points for completing activities
-- **Achievement Celebrations** - Special animations when goals are reached
+- **Daily Champions Calendar** - See who won each day in a visual calendar grid with full rankings
+- **Most Wins Tracker** - See who's been consistently crushing it over time
+- **Points System** - Earn points for completing daily activities
+- **Achievement Celebrations** - Special animations when weight loss goals are reached
+- **Visual Progress Tracking** - Color-coded progress bars for each person
 
 ### 🎨 Beautiful Design
 - Modern, gradient UI with smooth animations
@@ -62,10 +62,10 @@ npm run dev
 5. **Add Custom Activities** - Click "+ Add Extra Activity" for bonus tasks
 
 ### View Progress
-- **Individual Cards** - See BMI, progress bars, and stats for each person
-- **Daily Calendar** - Check who won each day with rankings
-- **Overall Leaderboard** - See long-term weight loss champions
-- **Most Wins** - Track who's been most consistent
+- **Individual Cards** - See BMI, progress bars, weight loss stats, and daily activities for each person
+- **Daily Calendar** - Check who won each day with full rankings and points
+- **Most Wins Summary** - Track who's been most consistent over time
+- **Historical Performance** - Compare progress across multiple days
 
 ## Tech Stack
 

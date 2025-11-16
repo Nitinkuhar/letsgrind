@@ -5,12 +5,14 @@ export interface Person {
   currentWeight: number;
   goalWeight: number;
   startDate: string;
+  targetEndDate: string; // Expected goal completion date
   avatar?: string;
   color: string;
   height: number; // in cm
   age: number;
   gender: 'male' | 'female' | 'other';
   dailyActivities: DailyActivity[];
+  weightHistory: WeightEntry[];
 }
 
 export interface WeightEntry {
@@ -28,12 +30,6 @@ export interface Activity {
 export interface DailyActivity {
   date: string; // YYYY-MM-DD format
   completedActivities: string[]; // Array of activity IDs
-  customActivities: CustomActivity[];
-}
-
-export interface CustomActivity {
-  id: string;
-  name: string;
-  points: number;
+  weight?: number; // Optional weight entry for that day in kg
 }
 
