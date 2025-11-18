@@ -22,13 +22,22 @@ app.use(express.json());
 // Initialize data file if it doesn't exist
 async function initDataFile() {
   try {
+    // Ensure the data directory exists
+    await fs.mkdir(DATA_DIR, { recursive: true });
+    console.log('✅ Data directory ready');
+    
+    // Check if data file exists
     await fs.access(DATA_FILE);
     console.log('✅ Data file exists');
-  } catch {
-    console.log('📝 Creating initial data file...');
-    const initialData = [];
-    await fs.writeFile(DATA_FILE, JSON.stringify(initialData, null, 2));
-    console.log('✅ Data file created');
+  } catch (error) {
+    if (error.code === 'ENOENT') {
+      console.log('📝 Creating initial data file...');
+      const initialData = [];
+      await fs.writeFile(DATA_FILE, JSON.stringify(initialData, null, 2));
+      console.log('✅ Data file created');
+    } else {
+      throw error;
+    }
   }
 }
 
