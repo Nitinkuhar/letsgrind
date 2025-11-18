@@ -5,9 +5,13 @@ const path = require('path');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
-const DATA_FILE = path.join(__dirname, 'data.json');
+
+// Use persistent volume if available (Railway), otherwise use local file
+const DATA_DIR = process.env.RAILWAY_VOLUME_MOUNT_PATH || __dirname;
+const DATA_FILE = path.join(DATA_DIR, 'data.json');
 
 console.log('🚀 Starting server...');
+console.log('📁 Data directory:', DATA_DIR);
 console.log('📁 Data file:', DATA_FILE);
 console.log('🌐 Port:', PORT);
 
