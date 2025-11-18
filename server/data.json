@@ -8,8 +8,8 @@
     "height": 165,
     "age": 28,
     "gender": "female",
-    "startDate": "2025-10-17",
-    "targetEndDate": "2025-11-28",
+    "startDate": "2025-11-17",
+    "targetEndDate": "2025-12-29",
     "color": "#FF6B6B",
     "dailyActivities": [
       {
@@ -24,12 +24,12 @@
     ],
     "weightHistory": [
       {
-        "date": "2025-11-16",
-        "weight": 71
+        "date": "2025-11-17",
+        "weight": 70
       },
       {
-        "date": "2025-10-17",
-        "weight": 70
+        "date": "2025-11-16",
+        "weight": 71
       }
     ]
   },
@@ -37,31 +37,43 @@
     "id": "2",
     "name": "Nitin Kuhar",
     "startWeight": 100,
-    "currentWeight": 100,
+    "currentWeight": 99.8,
     "goalWeight": 89,
     "height": 178,
     "age": 27,
     "gender": "male",
-    "startDate": "2025-10-17",
-    "targetEndDate": "2026-01-16",
+    "startDate": "2025-11-17",
+    "targetEndDate": "2026-02-16",
     "color": "#4ECDC4",
     "dailyActivities": [
       {
-        "date": "2025-11-16",
+        "date": "2025-11-18",
         "completedActivities": [
           "healthy-food",
-          "exercise"
+          "exercise",
+          "water",
+          "steps"
         ],
-        "weight": 100
+        "weight": 99.8
+      },
+      {
+        "date": "2025-11-17",
+        "completedActivities": [
+          "healthy-food",
+          "exercise",
+          "water",
+          "steps"
+        ],
+        "weight": 99.8
       }
     ],
     "weightHistory": [
       {
-        "date": "2025-11-16",
-        "weight": 100
+        "date": "2025-11-18",
+        "weight": 99.8
       },
       {
-        "date": "2025-10-17",
+        "date": "2025-11-17",
         "weight": 100
       }
     ]
