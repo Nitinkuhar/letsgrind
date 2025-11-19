@@ -1,6 +1,19 @@
-import { kv } from '@vercel/kv';
+import { createClient } from 'redis';
 
 const DATA_KEY = 'letsgrind:people';
+
+// Create Redis client (will be connected in handler)
+let redisClient = null;
+
+async function getRedisClient() {
+  if (!redisClient) {
+    redisClient = createClient({
+      url: process.env.REDIS_URL
+    });
+    await redisClient.connect();
+  }
+  return redisClient;
+}
 
 export default async function handler(req, res) {
   // Enable CORS
@@ -15,18 +28,20 @@ export default async function handler(req, res) {
   }
 
   try {
+    const redis = await getRedisClient();
+
     if (req.method === 'GET') {
-      // Fetch data from Vercel KV
-      const data = await kv.get(DATA_KEY);
+      // Fetch data from Redis
+      const data = await redis.get(DATA_KEY);
       
       if (!data) {
         // Return empty array if no data exists yet
         res.status(200).json([]);
       } else {
-        res.status(200).json(data);
+        res.status(200).json(JSON.parse(data));
       }
     } else if (req.method === 'POST') {
-      // Save data to Vercel KV
+      // Save data to Redis
       const data = req.body;
       
       if (!Array.isArray(data)) {
@@ -34,8 +49,8 @@ export default async function handler(req, res) {
         return;
       }
 
-      await kv.set(DATA_KEY, data);
-      console.log('✅ Data saved to Vercel KV');
+      await redis.set(DATA_KEY, JSON.stringify(data));
+      console.log('✅ Data saved to Redis');
       
       res.status(200).json({ 
         success: true, 
@@ -53,4 +68,3 @@ export default async function handler(req, res) {
     });
   }
 }
-
