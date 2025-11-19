@@ -2,6 +2,7 @@
   "name": "letsgrind-api",
   "version": "1.0.0",
   "description": "Railway test server for Let's Grind",
+  "type": "commonjs",
   "main": "api-server.js",
   "scripts": {
     "start": "node api-server.js"
