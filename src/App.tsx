@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { Person } from './types';
 import PersonCard from './components/PersonCard';
 import ProgressGraph from './components/ProgressGraph';
@@ -64,7 +64,6 @@ function App() {
   const [people, setPeople] = useState<Person[]>(INITIAL_DATA);
   const [loading, setLoading] = useState(true);
   const [serverOnline, setServerOnline] = useState(false);
-  const isInitialLoadRef = useRef(true);
 
   // Load data from server on mount
   useEffect(() => {
@@ -93,31 +92,15 @@ function App() {
         console.log('⚠️ Using initial data');
       } finally {
         setLoading(false);
-        isInitialLoadRef.current = false; // Mark initial load complete
       }
     };
 
     loadDataFromServer();
   }, []);
 
-  // Save to server whenever people data changes (but skip initial load)
-  useEffect(() => {
-    if (!loading && serverOnline && !isInitialLoadRef.current) {
-      const saveToServer = async () => {
-        try {
-          await api.saveData(people);
-          console.log('💾 Auto-saved to server');
-        } catch (error) {
-          console.error('❌ Error saving to server:', error);
-        }
-      };
-      saveToServer();
-    }
-  }, [people, loading, serverOnline]);
 
-
-  const handleUpdateActivities = (personId: string, date: string, completedActivities: string[], weight?: number) => {
-    setPeople(people.map(p => {
+  const handleUpdateActivities = async (personId: string, date: string, completedActivities: string[], weight?: number) => {
+    const updatedPeople = people.map(p => {
       if (p.id !== personId) return p;
 
       const existingDayIndex = p.dailyActivities.findIndex(da => da.date === date);
@@ -163,7 +146,20 @@ function App() {
         weightHistory: updatedWeightHistory,
         currentWeight: updatedCurrentWeight,
       };
-    }));
+    });
+
+    // Update state
+    setPeople(updatedPeople);
+
+    // Save to server immediately after update
+    if (serverOnline) {
+      try {
+        await api.saveData(updatedPeople);
+        console.log('💾 Saved to server');
+      } catch (error) {
+        console.error('❌ Error saving to server:', error);
+      }
+    }
   };
 
   if (loading) {
