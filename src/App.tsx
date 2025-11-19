@@ -64,6 +64,7 @@ function App() {
   const [people, setPeople] = useState<Person[]>(INITIAL_DATA);
   const [loading, setLoading] = useState(true);
   const [serverOnline, setServerOnline] = useState(false);
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
 
   // Load data from server on mount
   useEffect(() => {
@@ -92,25 +93,27 @@ function App() {
         console.log('⚠️ Using initial data');
       } finally {
         setLoading(false);
+        setIsInitialLoad(false); // Mark initial load complete
       }
     };
 
     loadDataFromServer();
   }, []);
 
-  // Save to server whenever people data changes
+  // Save to server whenever people data changes (but skip initial load)
   useEffect(() => {
-    if (!loading && serverOnline) {
+    if (!loading && serverOnline && !isInitialLoad) {
       const saveToServer = async () => {
         try {
           await api.saveData(people);
+          console.log('💾 Auto-saved to server');
         } catch (error) {
           console.error('❌ Error saving to server:', error);
         }
       };
       saveToServer();
     }
-  }, [people, loading, serverOnline]);
+  }, [people, loading, serverOnline, isInitialLoad]);
 
 
   const handleUpdateActivities = (personId: string, date: string, completedActivities: string[], weight?: number) => {
