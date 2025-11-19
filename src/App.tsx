@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Person } from './types';
 import PersonCard from './components/PersonCard';
 import ProgressGraph from './components/ProgressGraph';
@@ -64,7 +64,7 @@ function App() {
   const [people, setPeople] = useState<Person[]>(INITIAL_DATA);
   const [loading, setLoading] = useState(true);
   const [serverOnline, setServerOnline] = useState(false);
-  const [isInitialLoad, setIsInitialLoad] = useState(true);
+  const isInitialLoadRef = useRef(true);
 
   // Load data from server on mount
   useEffect(() => {
@@ -93,7 +93,7 @@ function App() {
         console.log('⚠️ Using initial data');
       } finally {
         setLoading(false);
-        setIsInitialLoad(false); // Mark initial load complete
+        isInitialLoadRef.current = false; // Mark initial load complete
       }
     };
 
@@ -102,7 +102,7 @@ function App() {
 
   // Save to server whenever people data changes (but skip initial load)
   useEffect(() => {
-    if (!loading && serverOnline && !isInitialLoad) {
+    if (!loading && serverOnline && !isInitialLoadRef.current) {
       const saveToServer = async () => {
         try {
           await api.saveData(people);
@@ -113,7 +113,7 @@ function App() {
       };
       saveToServer();
     }
-  }, [people, loading, serverOnline, isInitialLoad]);
+  }, [people, loading, serverOnline]);
 
 
   const handleUpdateActivities = (personId: string, date: string, completedActivities: string[], weight?: number) => {
