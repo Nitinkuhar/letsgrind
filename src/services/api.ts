@@ -1,9 +1,9 @@
 import { Person } from '../types';
 
 // API URL configuration
-// Development: http://localhost:3001/api
-// Production: Set VITE_API_URL environment variable in Vercel to your Railway URL
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
+// Production: Uses Vercel serverless functions at /api
+// Development: Can use local dev server or Vercel dev
+const API_URL = import.meta.env.VITE_API_URL || '/api';
 
 export const api = {
   // Fetch all data from server
