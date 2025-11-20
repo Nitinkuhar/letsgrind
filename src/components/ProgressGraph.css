@@ -48,6 +48,7 @@
   margin-bottom: 1.5rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   transition: all 0.3s ease;
+  overflow: hidden;
 }
 
 .points-badge:hover {
@@ -107,6 +108,8 @@
 /* Activity Breakdown */
 .activity-breakdown {
   flex: 1;
+  min-width: 0;
+  max-width: 280px;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
@@ -118,6 +121,7 @@
   display: flex;
   flex-direction: column;
   gap: 0.3rem;
+  min-width: 0;
 }
 
 .activity-item-header {
@@ -136,6 +140,9 @@
   font-size: 0.75rem;
   font-weight: 600;
   color: #555;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .activity-item-percentage {
@@ -493,6 +500,7 @@
     border-left: none;
     padding-top: 0.75rem;
     border-top: 1px solid rgba(0, 0, 0, 0.08);
+    max-width: none;
   }
 
   .activity-item-icon {
