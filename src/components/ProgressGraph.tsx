@@ -33,6 +33,13 @@ const ProgressGraph = ({ people }: ProgressGraphProps) => {
     const pace = weightLostSoFar >= expectedWeightLoss ? 'On Track' : 'Behind';
     const paceColor = weightLostSoFar >= expectedWeightLoss ? '#4caf50' : '#ff9800';
     
+    // Points calculation (25 points per activity, 4 activities per day = 100 max per day)
+    const totalPossiblePoints = daysPassed * 100; // 100 points per day max
+    const actualPoints = person.dailyActivities.reduce((total, day) => {
+      return total + (day.completedActivities.length * 25); // 25 points per activity
+    }, 0);
+    const pointsPercentage = totalPossiblePoints > 0 ? (actualPoints / totalPossiblePoints) * 100 : 0;
+    
     return {
       totalDays,
       daysPassed,
@@ -45,6 +52,9 @@ const ProgressGraph = ({ people }: ProgressGraphProps) => {
       actualProgress,
       pace,
       paceColor,
+      totalPossiblePoints,
+      actualPoints,
+      pointsPercentage,
     };
   };
 
@@ -72,6 +82,20 @@ const ProgressGraph = ({ people }: ProgressGraphProps) => {
                   <span className="progress-pace" style={{ color: progress.paceColor }}>
                     {progress.pace}
                   </span>
+                </div>
+              </div>
+
+              {/* Activity Points Badge */}
+              <div className="points-badge" style={{ borderColor: person.color }}>
+                <div className="points-icon">🏆</div>
+                <div className="points-content">
+                  <div className="points-label">Activity Score</div>
+                  <div className="points-value" style={{ color: person.color }}>
+                    {progress.actualPoints} / {progress.totalPossiblePoints}
+                  </div>
+                  <div className="points-percentage">
+                    {Math.round(progress.pointsPercentage)}% completion
+                  </div>
                 </div>
               </div>
 
