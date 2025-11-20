@@ -5,6 +5,23 @@ interface ProgressGraphProps {
   people: Person[];
 }
 
+// Helper function to format date with ordinal suffix
+const formatDateWithOrdinal = (dateString: string) => {
+  const date = new Date(dateString);
+  const day = date.getDate();
+  const month = date.toLocaleDateString('en-US', { month: 'short' });
+  const year = date.getFullYear();
+  
+  // Get ordinal suffix (st, nd, rd, th)
+  const getOrdinalSuffix = (n: number) => {
+    const s = ['th', 'st', 'nd', 'rd'];
+    const v = n % 100;
+    return s[(v - 20) % 10] || s[v] || s[0];
+  };
+  
+  return `${day}${getOrdinalSuffix(day)} ${month} ${year}`;
+};
+
 const ProgressGraph = ({ people }: ProgressGraphProps) => {
   const calculateProgress = (person: Person) => {
     const today = new Date();
@@ -81,6 +98,14 @@ const ProgressGraph = ({ people }: ProgressGraphProps) => {
                   <h3>{person.name}</h3>
                   <span className="progress-pace" style={{ color: progress.paceColor }}>
                     {progress.pace}
+                  </span>
+                </div>
+                <div className="progress-journey-info">
+                  <span className="journey-detail">
+                    Started On: {formatDateWithOrdinal(person.startDate)}
+                  </span>
+                  <span className="journey-detail">
+                    🎯 Goal: {person.startWeight} → {person.goalWeight} kg
                   </span>
                 </div>
               </div>
@@ -172,12 +197,12 @@ const ProgressGraph = ({ people }: ProgressGraphProps) => {
               {/* Weight Comparison */}
               <div className="weight-comparison">
                 <div className="weight-item">
-                  <span className="weight-label">Expected Weight</span>
+                  <span className="weight-label">📌 Today’s Expected Weight</span>
                   <span className="weight-value">{progress.expectedWeight.toFixed(1)} kg</span>
                 </div>
                 <div className="weight-divider">vs</div>
                 <div className="weight-item">
-                  <span className="weight-label">Current Weight</span>
+                  <span className="weight-label">Today’s Actual Weight</span>
                   <span className="weight-value" style={{ color: person.color }}>
                     {person.currentWeight.toFixed(1)} kg
                   </span>
