@@ -57,6 +57,24 @@ const ProgressGraph = ({ people }: ProgressGraphProps) => {
     }, 0);
     const pointsPercentage = totalPossiblePoints > 0 ? (actualPoints / totalPossiblePoints) * 100 : 0;
     
+    // Individual activity completion percentages
+    const activityStats = [
+      { id: 'healthy-food', name: 'Diet', icon: '🥗' },
+      { id: 'exercise', name: 'Daily Exercise', icon: '💪' },
+      { id: 'water', name: 'Daily Water Intake', icon: '💧' },
+      { id: 'steps', name: 'Daily 10K Steps', icon: '👟' },
+    ].map(activity => {
+      const completedDays = person.dailyActivities.filter(day => 
+        day.completedActivities.includes(activity.id)
+      ).length;
+      const percentage = daysPassed > 0 ? (completedDays / daysPassed) * 100 : 0;
+      return {
+        ...activity,
+        completedDays,
+        percentage: Math.round(percentage),
+      };
+    });
+    
     return {
       totalDays,
       daysPassed,
@@ -72,6 +90,7 @@ const ProgressGraph = ({ people }: ProgressGraphProps) => {
       totalPossiblePoints,
       actualPoints,
       pointsPercentage,
+      activityStats,
     };
   };
 
@@ -112,15 +131,41 @@ const ProgressGraph = ({ people }: ProgressGraphProps) => {
 
               {/* Activity Points Badge */}
               <div className="points-badge" style={{ borderColor: person.color }}>
-                <div className="points-icon">🏆</div>
-                <div className="points-content">
-                  <div className="points-label">Activity Score</div>
-                  <div className="points-value" style={{ color: person.color }}>
-                    {progress.actualPoints} / {progress.totalPossiblePoints}
+                <div className="points-header">
+                  <div className="points-icon">🏆</div>
+                  <div className="points-content">
+                    <div className="points-label">Activity Score</div>
+                    <div className="points-value" style={{ color: person.color }}>
+                      {progress.actualPoints} / {progress.totalPossiblePoints}
+                    </div>
+                    <div className="points-percentage">
+                      {Math.round(progress.pointsPercentage)}% overall completion
+                    </div>
                   </div>
-                  <div className="points-percentage">
-                    {Math.round(progress.pointsPercentage)}% completion
-                  </div>
+                </div>
+
+                {/* Individual Activity Breakdown */}
+                <div className="activity-breakdown">
+                  {progress.activityStats.map(activity => (
+                    <div key={activity.id} className="activity-item">
+                      <div className="activity-item-header">
+                        <span className="activity-item-icon">{activity.icon}</span>
+                        <span className="activity-item-name">{activity.name}</span>
+                        <span className="activity-item-percentage" style={{ color: person.color }}>
+                          {activity.percentage}%
+                        </span>
+                      </div>
+                      <div className="activity-progress-track">
+                        <div 
+                          className="activity-progress-fill"
+                          style={{ 
+                            width: `${activity.percentage}%`,
+                            background: `linear-gradient(90deg, ${person.color}dd, ${person.color})`
+                          }}
+                        />
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
 
