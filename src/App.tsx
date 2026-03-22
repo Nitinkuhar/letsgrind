@@ -20,42 +20,24 @@ const calculateTargetEndDate = (startDate: string, startWeight: number, goalWeig
 };
 
 // Define start dates
-const ANURADHA_START = '2025-11-17';
-const NITIN_START = '2025-11-17';
+const NITIN_START = '2026-03-23';
 
 const INITIAL_DATA: Person[] = [
   {
-    id: '1',
-    name: 'Anuradha',
-    startWeight: 70,
-    currentWeight: 70,
-    goalWeight: 65,
-    height: 165,
-    age: 28,
-    gender: 'female',
-    startDate: ANURADHA_START,
-    targetEndDate: calculateTargetEndDate(ANURADHA_START, 70, 65), // Auto: ~6 weeks (5kg ÷ 0.9)
-    color: '#FF6B6B',
-    dailyActivities: [],
-    weightHistory: [
-      { date: ANURADHA_START, weight: 70 }
-    ],
-  },
-  {
     id: '2',
     name: 'Nitin Kuhar',
-    startWeight: 100,
-    currentWeight: 100,
-    goalWeight: 89,
+    startWeight: 100.80,
+    currentWeight: 100.80,
+    goalWeight: 95.00,
     height: 178,
     age: 27,
     gender: 'male',
     startDate: NITIN_START,
-    targetEndDate: calculateTargetEndDate(NITIN_START, 100, 89), // Auto: ~13 weeks (11kg ÷ 0.9)
+    targetEndDate: calculateTargetEndDate(NITIN_START, 100.8, 95),
     color: '#4ECDC4',
     dailyActivities: [],
     weightHistory: [
-      { date: NITIN_START, weight: 100 }
+      { date: NITIN_START, weight: 100.8 }
     ],
   },
 ];
