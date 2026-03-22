@@ -42,6 +42,8 @@ const INITIAL_DATA: Person[] = [
   },
 ];
 
+const freshInitialData = (): Person[] => structuredClone(INITIAL_DATA);
+
 function App() {
   const [people, setPeople] = useState<Person[]>(INITIAL_DATA);
   const [loading, setLoading] = useState(true);
@@ -80,6 +82,25 @@ function App() {
     loadDataFromServer();
   }, []);
 
+  const handleResetToDefaults = async () => {
+    const ok = window.confirm(
+      'Reset all trackers to defaults? This clears activity and weight history and overwrites data on the server.'
+    );
+    if (!ok) return;
+
+    const next = freshInitialData();
+    setPeople(next);
+
+    if (serverOnline) {
+      try {
+        await api.saveData(next);
+        console.log('💾 Reset saved to server');
+      } catch (error) {
+        console.error('❌ Error saving reset:', error);
+        alert('Could not save to the server. This page shows defaults; try again when the connection is working.');
+      }
+    }
+  };
 
   const handleUpdateActivities = async (personId: string, date: string, completedActivities: string[], weight?: number) => {
     const updatedPeople = people.map(p => {
@@ -160,6 +181,13 @@ function App() {
       <header className="header">
         <h1>💪 Let's Grind</h1>
         <p>Crush your goals together, one day at a time</p>
+        <button
+          type="button"
+          className="header-reset-btn"
+          onClick={handleResetToDefaults}
+        >
+          Reset to defaults
+        </button>
       </header>
 
       <div className="container">
